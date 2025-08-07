@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-export const maxDuration = 840; // 14 minutes per user requirement
+export const maxDuration = 800; // capped by Vercel platform limit
 import { getSp500Symbols } from "@/lib/sp500";
 import { fetchYahooIntraday15m } from "@/lib/yahoo";
 import { detectOutsideReversals } from "@/lib/outsideReversal";

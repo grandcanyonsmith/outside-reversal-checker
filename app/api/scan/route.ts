@@ -4,7 +4,7 @@ import { fetchYahooIntraday15m } from "@/lib/yahoo";
 import { detectOutsideReversals } from "@/lib/outsideReversal";
 
 export const revalidate = 0;
-export const maxDuration = 840; // 14 minutes per user requirement
+export const maxDuration = 800; // capped by Vercel platform limit
 
 let cache: { reversals: any[]; at: number } | null = null;
 
