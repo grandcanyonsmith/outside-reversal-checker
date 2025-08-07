@@ -22,3 +22,22 @@ export function detectOutsideReversals(candles: Candle[]): OutsideReversal[] {
   return out;
 }
 
+export function aggregateTwoDay(candles: Candle[]): Candle[] {
+  // Combine non-overlapping pairs into 2D candles: [0,1], [2,3], ...
+  const agg: Candle[] = [];
+  for (let i = 0; i < candles.length; i += 2) {
+    const first = candles[i];
+    const second = candles[i + 1];
+    if (!first || !second) break;
+    agg.push({
+      t: second.t,
+      o: first.o,
+      h: Math.max(first.h, second.h),
+      l: Math.min(first.l, second.l),
+      c: second.c,
+      v: (first.v || 0) + (second.v || 0),
+    });
+  }
+  return agg;
+}
+

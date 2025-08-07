@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSp500Symbols } from "@/lib/sp500";
-import { fetchYahooIntraday15m } from "@/lib/yahoo";
-import { detectOutsideReversals } from "@/lib/outsideReversal";
+import { fetchYahooDaily } from "@/lib/yahoo";
+import { aggregateTwoDay, detectOutsideReversals } from "@/lib/outsideReversal";
 
 export const revalidate = 0;
 export const maxDuration = 800; // capped by Vercel platform limit
@@ -31,13 +31,14 @@ export async function GET() {
       const sym = queue.shift();
       if (!sym) break;
       try {
-        const candles = await fetchYahooIntraday15m(sym);
-        const outs = detectOutsideReversals(candles);
+        const daily = await fetchYahooDaily(sym);
+        const twoDay = aggregateTwoDay(daily);
+        const outs = detectOutsideReversals(twoDay);
         const latest = outs.length ? outs[outs.length - 1] : undefined;
         if (latest) {
           reversals.push({
             symbol: sym,
-            timeframe: "15m",
+            timeframe: "2D",
             direction: latest.direction,
             time: new Date(latest.time).toISOString(),
             ohlc: { o: latest.o, h: latest.h, l: latest.l, c: latest.c },

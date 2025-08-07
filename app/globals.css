@@ -1,18 +1,28 @@
 :root { color-scheme: light dark; }
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
-body { background: canvas; color: canvastext; }
+body { background: #0c0c0c; color: #e5e5e5; }
 a { color: LinkText; }
-.container { max-width: 1100px; margin: 0 auto; padding: 16px; }
-.card { border: 1px solid color-mix(in oklab, canvastext 15%, transparent); border-radius: 12px; padding: 16px; background: color-mix(in oklab, canvas 98%, canvastext 2%); }
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }
-.badge { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; border-radius: 9999px; font-size: 12px; border: 1px solid color-mix(in oklab, canvastext 20%, transparent); }
-.success { background: color-mix(in oklab, #16a34a 20%, transparent); }
-.danger { background: color-mix(in oklab, #dc2626 20%, transparent); }
-.muted { color: color-mix(in oklab, canvastext 50%, transparent); }
-.table { width: 100%; border-collapse: collapse; }
-.table th, .table td { padding: 8px; border-bottom: 1px solid color-mix(in oklab, canvastext 15%, transparent); text-align: left; }
-.toolbar { display: flex; gap: 8px; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-.pill { border: 1px solid color-mix(in oklab, canvastext 15%, transparent); padding: 6px 10px; border-radius: 999px; }
+.container { max-width: 1200px; margin: 0 auto; padding: 16px; }
+.muted { color: #9ca3af; }
 .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+
+/* Bloomberg-like terminal aesthetic */
+.bloomberg-title { color: #f97316; letter-spacing: 0.5px; }
+.terminal { border: 1px solid #262626; background: #111; border-radius: 8px; overflow: hidden; }
+.terminal-table { width: 100%; border-collapse: collapse; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 14px; }
+.terminal-table th { background: #111; color: #a3a3a3; font-weight: 600; padding: 10px; border-bottom: 1px solid #262626; text-align: left; }
+.terminal-table td { padding: 10px; border-bottom: 1px solid #1f1f1f; }
+.terminal-table tr:hover { background: #0f172a; }
+.green { color: #22c55e; }
+.red { color: #ef4444; }
+.yellow { color: #fde047; }
+.toolbar { display: flex; gap: 8px; align-items: center; justify-content: space-between; margin: 12px 0; }
+.pill { border: 1px solid #333; padding: 6px 10px; border-radius: 999px; background: #0b0b0b; color: #a3a3a3; }
+
+/* Ticker marquee */
+.ticker { width: 100%; overflow: hidden; white-space: nowrap; border: 1px solid #333; border-radius: 6px; padding: 8px; margin-bottom: 12px; background: #0b0f1a; color: #ffd60a; font-weight: 700; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; position: relative; }
+.ticker::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent 0 10px, rgba(255,255,255,0.03) 10px 20px); pointer-events: none; }
+.ticker { animation: ticker-scroll 20s linear infinite; }
+@keyframes ticker-scroll { from { text-indent: 100%; } to { text-indent: -100%; } }
 
