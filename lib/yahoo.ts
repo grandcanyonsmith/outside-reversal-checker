@@ -30,7 +30,7 @@ export async function fetchYahooDaily(symbol: string, days: number = 120): Promi
   const nowSec = Math.floor(Date.now() / 1000);
   const period2 = nowSec + 5 * 60;
   const period1 = nowSec - days * 24 * 60 * 60;
-  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1d&period1=${period1}&period2=${period2}`;
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1d&period1=${period1}&period2=${period2}&includePrePost=true&events=div%2Csplit`;
   const res = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0" }, cache: "no-store" });
   if (!res.ok) throw new Error(`Yahoo fetch failed ${symbol}: ${res.status}`);
   const json = await res.json();

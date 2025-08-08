@@ -19,7 +19,7 @@ export async function GET() {
   const symbols = await getSp500Symbols();
   const concurrency = Number(process.env.SCAN_CONCURRENCY || 10);
   const queue = [...symbols];
-  const nowMinus3d = Date.now() - 3 * 24 * 60 * 60_000; // recent window for 2D candles ~ last few days
+  const startOfToday = new Date(); startOfToday.setHours(0,0,0,0);
 
   async function worker() {
     while (queue.length) {
@@ -30,7 +30,7 @@ export async function GET() {
         const twoDay = aggregateTwoDay(daily);
         const outs = detectOutsideReversals(twoDay);
         const latest = outs.length ? outs[outs.length - 1] : undefined;
-        if (latest && latest.time >= nowMinus3d) {
+        if (latest && latest.time >= startOfToday.getTime()) {
           await notify(sym, latest.direction, new Date(latest.time).toISOString());
         }
       } catch {

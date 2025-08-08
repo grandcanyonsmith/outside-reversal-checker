@@ -14,7 +14,7 @@ export default function HomePage() {
   const [reversals, setReversals] = useState<Reversal[]>([]);
   const [lastUpdated, setLastUpdated] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [onlyRecent, setOnlyRecent] = useState<boolean>(true);
+  const [onlyToday, setOnlyToday] = useState<boolean>(true);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -37,11 +37,12 @@ export default function HomePage() {
   }, []);
 
   const rows = useMemo(() => {
-    const cutoff = Date.now() - 30 * 60_000; // show last 30min if onlyRecent
+    const startOfToday = new Date();
+    startOfToday.setHours(0,0,0,0);
     return reversals
-      .filter(r => (onlyRecent ? new Date(r.time).getTime() >= cutoff : true))
+      .filter(r => (onlyToday ? new Date(r.time).getTime() >= startOfToday.getTime() : true))
       .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());
-  }, [reversals, onlyRecent]);
+  }, [reversals, onlyToday]);
 
   return (
     <div className="container">
@@ -51,10 +52,10 @@ export default function HomePage() {
         <div className="pill mono">{isLoading ? "Refreshing…" : `Last updated: ${lastUpdated || "—"}`}</div>
       </div>
       <div className="toolbar">
-        <div className="muted">S&P 500 • 2D timeframe • auto-refresh 60s</div>
+        <div className="muted">S&P 500 • 2D timeframe • auto-refresh 60s (shows yesterday+today)</div>
         <label style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
-          <input type="checkbox" checked={onlyRecent} onChange={e => setOnlyRecent(e.target.checked)} />
-          Only show last 30 days
+          <input type="checkbox" checked={onlyToday} onChange={e => setOnlyToday(e.target.checked)} />
+          Only show today
         </label>
       </div>
 

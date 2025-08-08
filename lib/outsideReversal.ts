@@ -23,12 +23,11 @@ export function detectOutsideReversals(candles: Candle[]): OutsideReversal[] {
 }
 
 export function aggregateTwoDay(candles: Candle[]): Candle[] {
-  // Combine non-overlapping pairs into 2D candles: [0,1], [2,3], ...
+  // Sliding 2-day windows: [0,1], [1,2], [2,3], ..., so latest always covers yesterday+today
   const agg: Candle[] = [];
-  for (let i = 0; i < candles.length; i += 2) {
+  for (let i = 0; i < candles.length - 1; i++) {
     const first = candles[i];
     const second = candles[i + 1];
-    if (!first || !second) break;
     agg.push({
       t: second.t,
       o: first.o,
